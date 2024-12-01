@@ -2,6 +2,7 @@
 
 ## Tech Stack
 
+- [Nix Flakes](https://nixos.wiki/wiki/flakes)
 - [Deno](https://deno.land/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Effect](https://effect.website/)
