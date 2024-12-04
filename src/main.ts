@@ -1,13 +1,23 @@
 import { Effect as E, Logger } from "effect";
+import { parseArgs } from "@std/cli";
 
-import { readInput } from "@/day02/common.ts";
-import _part1 from "@/day02/part1.ts";
-import part2 from "@/day02/part2.ts";
+const args = parseArgs(Deno.args, {
+  string: ["day", "part"],
+});
 
-await part2.pipe(
+const day = `day${args.day?.padStart(2, "0")}`;
+const part = `part${args.part}`;
+
+const { default: program } = await import(
+  `@/${day}/${part}.ts`
+);
+
+const { readInput } = await import(`@/${day}/common.ts`);
+
+await program.pipe(
   E.tap(E.logInfo),
 ).pipe(
-  E.provide(readInput("src/day02/input.txt")),
+  E.provide(readInput(`src/${day}/input.txt`)),
   E.provide(Logger.pretty),
   E.runPromiseExit,
 );
