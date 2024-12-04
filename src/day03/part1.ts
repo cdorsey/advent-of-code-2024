@@ -7,10 +7,7 @@ export default E.gen(function* () {
   return Chunk.fromIterable(
     input.matchAll(/mul\((\d{1,3}),(\d{1,3})\)/gm),
   ).pipe(
-    Chunk.map(([_, left, right]) => {
-      console.log({ left, right });
-      return parseInt(left) * parseInt(right);
-    }),
+    Chunk.map(([_, left, right]) => parseInt(left) * parseInt(right)),
     Chunk.reduce(0, (acc, cur) => acc + cur),
   );
 });
