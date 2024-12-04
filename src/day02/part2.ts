@@ -27,23 +27,18 @@ export default E.gen(function* () {
     );
   };
 
-  const problemDampener = (chunk: Chunk.Chunk<Chunk.Chunk<number>>) =>
+  const problemDampener = (chunk: Chunk.Chunk<number>) =>
     Chunk.map(
       chunk,
-      (report) =>
-        report.pipe(
-          Chunk.map(
-            (_, i) =>
-              Chunk.filterMap(
-                report,
-                (n, j) => (j === i ? Option.none() : Option.some(n)),
-              ),
-          ),
+      (_, i) =>
+        Chunk.filterMap(
+          chunk,
+          (n, j) => (j === i ? Option.none() : Option.some(n)),
         ),
     );
 
   const [_, safeReports] = input.pipe(
-    problemDampener,
+    Chunk.map(problemDampener),
     Chunk.map(Chunk.map(mapDiffToPrevious)),
     Chunk.map(Chunk.compact),
     Chunk.partition(Chunk.some(reportIsSafe)),
